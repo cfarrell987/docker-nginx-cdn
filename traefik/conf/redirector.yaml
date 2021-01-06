@@ -1,0 +1,20 @@
+http:
+  routers:
+    redirector:
+      service: any
+      entryPoints:
+        - http
+      rule: "HostRegexp(`{host:.+}`)"
+      middlewares:
+        - redirector
+      priority: 1
+  services:
+    any:
+      loadBalancer:
+        servers:
+          - url: "http://whatever"
+  middlewares:
+    redirector:
+      redirectScheme:
+        permanent: true
+        scheme: https
